@@ -117,6 +117,7 @@ anova(casual_effect_linear_full, casual_effect_linear)
 Fitting the model on sample. 
 ```
 df2$fitted_conversion <- (predict(casual_effect_linear_full, df2))
+```
 fitting linear model for binary requires assuming binary probability bellongs to [0,1]
 ```
 df2$fitted_conversion <- ifelse(df2$fitted_conversion <0,0,df2$fitted_conversion) 
