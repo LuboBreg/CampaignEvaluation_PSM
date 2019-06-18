@@ -68,32 +68,34 @@ df3<- match.data(match_model)
 dim(df3)
 summary(df3)
 ```
-#Visualization of the maching model 
+Visualization of the maching model 
 
-###QQplot
+QQplot
 ```
 plot(match_model)
 plot(match_model, type = 'jitter', interactive = FALSE)
 
-##Review distribution feature by feature distribution.
+```
+Review distribution feature by feature distribution.
+```
 bal.plot(match_model, 'f0')
 bal.plot(match_model, var.name = "f1", which = "both",
          type = "histogram", mirror = TRUE)
-
 bal.plot(match_model, "distance", which = "both")
+```
 
-##Review all features difference in adjusteed and unadjusted samples at once using love chart 
+Review all features difference in adjusteed and unadjusted samples at once using love chart 
+```
 love.plot(bal.tab(match_model), threshold = .1)
 ```
 
-#CASUAL EFFECT 
-##Simple T test
+CASUAL EFFECT 
+Simple T test
 ```
 with(df3, t.test(conversion ~ exposure))
 ```
 Linear model 
 Causal effect defined by coefficient OLS of simple/full model.
-
 simple model 
 ```
 casual_effect_linear <- lm(conversion ~ exposure, df3)
@@ -107,16 +109,15 @@ summary(casual_effect_linear_full)
 ```
 Testing joint sigfinicance of f0-f11 ( F test )
 anova(casual_effect_linear_full, casual_effect_linear)
-#> the f0, f11 are joinly significan 
+-> the f0, f11 are joinly significan 
 
-
-#Fitting the model on sample. 
+Fitting the model on sample. 
 ```
 df2$fitted_conversion <- (predict(casual_effect_linear_full, df2))
 #fitting linear model for binary requires assuming binary probability bellongs to [0,1]
 df2$fitted_conversion <- ifelse(df2$fitted_conversion <0,0,df2$fitted_conversion) 
 ```
-#Distribution of fitted values
+Distribution of fitted values
 ```
 qplot() + geom_density(aes(df2$fitted_conversion), fill = 'blue')
 ```
